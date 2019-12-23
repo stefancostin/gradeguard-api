@@ -33,10 +33,10 @@ public class UserController {
 //    public Student updateUserById(@PathVariable("id") int id, @RequestBody Student student) {
 //        return studentService.updateStudentById(id, student);
 //    }
-//
-//    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-//    public Student removeUserById(@PathVariable("id") int id) {
-//        return studentService.removeStudentById(id);
-//    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public void removeUserById(@PathVariable("id") int id) {
+        userService.removeUserById(id);
+    }
 
 }

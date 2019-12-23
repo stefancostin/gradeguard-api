@@ -29,4 +29,9 @@ public class SubjectController {
         return subjectService.insertSubject(subject);
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public void removeSubjectById(@PathVariable("id") int id) {
+        subjectService.removeSubjectById(id);
+    }
+
 }

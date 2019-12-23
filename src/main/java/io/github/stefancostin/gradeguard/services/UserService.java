@@ -28,9 +28,9 @@ public class UserService {
 //    public Student updateUserById(int id, Student student) {
 //        return userRepository.updateUserById(id, student);
 //    }
-//
-//    public Student removeUserById(int id) {
-//        return userRepository.removeUserById(id);
-//    }
+
+    public void removeUserById(int id) {
+        userRepository.deleteById(id);
+    }
 
 }
