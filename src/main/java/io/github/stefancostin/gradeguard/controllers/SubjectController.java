@@ -3,6 +3,7 @@ package io.github.stefancostin.gradeguard.controllers;
 import io.github.stefancostin.gradeguard.entities.Subject;
 import io.github.stefancostin.gradeguard.services.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -24,9 +25,14 @@ public class SubjectController {
         return subjectService.getSubjectById(id);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Subject insertSubject(@RequestBody Subject subject) {
         return subjectService.insertSubject(subject);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Subject updateSubjectById(@PathVariable int id, @RequestBody Subject subject) {
+        return subjectService.updateSubjectById(id, subject);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

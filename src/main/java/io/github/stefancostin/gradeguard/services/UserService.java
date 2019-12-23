@@ -25,9 +25,15 @@ public class UserService {
         return userRepository.save(user);
     }
 
-//    public Student updateUserById(int id, Student student) {
-//        return userRepository.updateUserById(id, student);
-//    }
+    public User updateUserById(int id, User user) {
+        User updatedUser = userRepository.findById(id).orElse(null);
+        updatedUser.setFirstName(user.getFirstName());
+        updatedUser.setLastName(user.getLastName());
+        updatedUser.setEmail(user.getEmail());
+        updatedUser.setRole(user.getRole());
+        updatedUser.setYearOfStudy(user.getYearOfStudy());
+        return userRepository.save(updatedUser);
+    }
 
     public void removeUserById(int id) {
         userRepository.deleteById(id);

@@ -26,6 +26,15 @@ public class SubjectService {
         return subjectRepository.save(subject);
     }
 
+    public Subject updateSubjectById(int id, Subject subject) {
+        Subject updatedSubject = subjectRepository.findById(id).orElse(null);
+        updatedSubject.setName(subject.getName());
+        updatedSubject.setAcronym(subject.getAcronym());
+        updatedSubject.setSemester(subject.getSemester());
+        updatedSubject.setYearOfStudy(subject.getYearOfStudy());
+        return subjectRepository.save(updatedSubject);
+    }
+
     public void removeSubjectById(int id) { subjectRepository.deleteById(id); }
 
 }

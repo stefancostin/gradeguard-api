@@ -3,6 +3,7 @@ package io.github.stefancostin.gradeguard.controllers;
 import io.github.stefancostin.gradeguard.entities.User;
 import io.github.stefancostin.gradeguard.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -24,15 +25,15 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public User insertUser(@RequestBody User user) {
         return this.userService.insertUser(user);
     }
 
-//    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-//    public Student updateUserById(@PathVariable("id") int id, @RequestBody Student student) {
-//        return studentService.updateStudentById(id, student);
-//    }
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public User updateUserById(@PathVariable("id") int id, @RequestBody User user) {
+        return userService.updateUserById(id, user);
+    }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void removeUserById(@PathVariable("id") int id) {
