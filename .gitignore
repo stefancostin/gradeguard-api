@@ -3,6 +3,9 @@
 .classpath
 factoryConfiguration.json
 
+### VS Code ###
+.vscode/
+
 ### Eclipse ###
 .metadata
 bin/
@@ -18,9 +21,11 @@ local.properties
 
 ### IntelliJ ###
 out/
-**/*.iml
-**/.idea
-**/.gradle
+.idea
+*.iws
+*.iml
+*.ipr
+*.gradle
 
 # IntelliJ User-specific
 .idea/**/workspace.xml
@@ -87,6 +92,9 @@ buildNumber.properties
 *.zip
 *.tar.gz
 *.rar
+
+### Help ###
+HELP.md
 
 # Mac Files #
 .DS_Store
