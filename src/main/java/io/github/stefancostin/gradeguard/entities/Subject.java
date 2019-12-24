@@ -33,7 +33,7 @@ public class Subject {
     @ManyToMany(mappedBy = "subjectsTaught", fetch = FetchType.EAGER)
     private Set<User> professors = new HashSet<User>();
 
-    @OneToMany(mappedBy = "subject")
+    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL)
     private Set<Grade> grades = new HashSet<>();
 
     public Subject(String name, String acronym, YearOfStudy yearOfStudy, Semester semester) {

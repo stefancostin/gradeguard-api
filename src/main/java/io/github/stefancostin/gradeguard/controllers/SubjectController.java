@@ -31,8 +31,8 @@ public class SubjectController {
         return subjectService.insertSubject(subject);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public SubjectDTO updateSubjectById(@PathVariable int id, @RequestBody SubjectDTO subject) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public SubjectDTO updateSubjectById(@PathVariable("id") int id, @RequestBody SubjectDTO subject) {
         return subjectService.updateSubjectById(id, subject);
     }
 

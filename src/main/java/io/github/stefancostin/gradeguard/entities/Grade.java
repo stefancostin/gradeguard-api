@@ -1,5 +1,6 @@
 package io.github.stefancostin.gradeguard.entities;
 
+import io.github.stefancostin.gradeguard.models.GradeDTO;
 import io.github.stefancostin.gradeguard.utils.GradeType;
 
 import javax.persistence.*;
@@ -16,13 +17,13 @@ public class Grade {
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "grade_type", nullable = true)
     private GradeType gradeType;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "subject_id")
     private Subject subject;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "student_id")
     private User student;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "professor_id")
     private User professor;
 
