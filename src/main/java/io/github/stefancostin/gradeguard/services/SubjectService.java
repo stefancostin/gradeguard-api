@@ -2,11 +2,14 @@ package io.github.stefancostin.gradeguard.services;
 
 import io.github.stefancostin.gradeguard.entities.Subject;
 import io.github.stefancostin.gradeguard.entities.User;
+import io.github.stefancostin.gradeguard.models.SubjectDTO;
 import io.github.stefancostin.gradeguard.repositories.ISubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SubjectService {
@@ -14,25 +17,29 @@ public class SubjectService {
     @Autowired
     ISubjectRepository subjectRepository;
 
-    public Collection<Subject> getSubjects() {
-        return subjectRepository.findAll();
+    public List<SubjectDTO> getSubjects() {
+        return subjectRepository.findAll().stream().map(subject -> new SubjectDTO(subject)).collect(Collectors.toList());
     }
 
-    public Subject getSubjectById(int id) {
-        return subjectRepository.findById(id).orElse(null);
+    public SubjectDTO getSubjectById(int id) {
+        Subject subjectModel = subjectRepository.findById(id).orElse(null);
+        return new SubjectDTO(subjectModel);
     }
 
-    public Subject insertSubject(Subject subject) {
-        return subjectRepository.save(subject);
+    public SubjectDTO insertSubject(SubjectDTO subject) {
+        Subject subjectModel = new Subject(subject);
+        Subject insertedSubject = subjectRepository.save(subjectModel);
+        return new SubjectDTO(insertedSubject);
     }
 
-    public Subject updateSubjectById(int id, Subject subject) {
+    public SubjectDTO updateSubjectById(int id, SubjectDTO subject) {
         Subject updatedSubject = subjectRepository.findById(id).orElse(null);
         updatedSubject.setName(subject.getName());
         updatedSubject.setAcronym(subject.getAcronym());
         updatedSubject.setSemester(subject.getSemester());
         updatedSubject.setYearOfStudy(subject.getYearOfStudy());
-        return subjectRepository.save(updatedSubject);
+        Subject result = subjectRepository.save(updatedSubject);
+        return new SubjectDTO(result);
     }
 
     public void removeSubjectById(int id) { subjectRepository.deleteById(id); }

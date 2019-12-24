@@ -1,9 +1,15 @@
 package io.github.stefancostin.gradeguard.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import io.github.stefancostin.gradeguard.models.UserDTO;
 import io.github.stefancostin.gradeguard.utils.Role;
 import io.github.stefancostin.gradeguard.utils.YearOfStudy;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -27,13 +33,32 @@ public class User {
     @Column(name = "year_of_study", nullable = false)
     private YearOfStudy yearOfStudy;
 
-    public User(int id, String firstName, String lastName, String email, String password, YearOfStudy yearOfStudy) {
+    @JsonBackReference
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "professors_subjects",
+            joinColumns = @JoinColumn(name = "subject_id"),
+            inverseJoinColumns = @JoinColumn(name = "professor_id"))
+    private Set<Subject> subjectsTaught = new HashSet<Subject>();
+
+    public User(int id, String firstName, String lastName, String email, String password, Role role, YearOfStudy yearOfStudy) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.role = role;
         this.yearOfStudy = yearOfStudy;
+    }
+
+    public User(UserDTO user) {
+        this.id = user.getId();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.role = user.getRole();
+        this.yearOfStudy = user.getYearOfStudy();
     }
 
     public User() { }
@@ -89,4 +114,19 @@ public class User {
     public void setYearOfStudy(YearOfStudy yearOfStudy) {
         this.yearOfStudy = yearOfStudy;
     }
+
+    public Set<Subject> getSubjectsTaught() {
+        return subjectsTaught;
+    }
+
+    public void addSubjectTaught(Subject subject) {
+//        this.subjectsTaught.add(subject);
+//        subject.getProfessors().add(this);
+    }
+
+    public void removeSubjectTaught(Subject subject) {
+//        this.subjectsTaught.remove(subject);
+//        subject.getProfessors().remove(this);
+    }
+
 }
