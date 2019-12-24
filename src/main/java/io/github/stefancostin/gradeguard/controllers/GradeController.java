@@ -37,4 +37,9 @@ public class GradeController {
         return gradeService.updateGradeById(id, grade);
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public void removeGradeById(@PathVariable("id") int id) {
+        gradeService.removeGradeById(id);
+    }
+
 }

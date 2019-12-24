@@ -64,4 +64,6 @@ public class GradeService {
         return gradeRepository.save(updatedGrade);
     }
 
+    public void removeGradeById(int id) { gradeRepository.deleteById(id); }
+
 }
