@@ -41,6 +41,12 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "professor_id"))
     private Set<Subject> subjectsTaught = new HashSet<Subject>();
 
+    @OneToMany(mappedBy = "student")
+    private Set<Grade> studentGrades = new HashSet<>();
+
+    @OneToMany(mappedBy = "professor")
+    private Set<Grade> professorGrades = new HashSet<>();
+
     public User(int id, String firstName, String lastName, String email, String password, Role role, YearOfStudy yearOfStudy) {
         this.id = id;
         this.firstName = firstName;

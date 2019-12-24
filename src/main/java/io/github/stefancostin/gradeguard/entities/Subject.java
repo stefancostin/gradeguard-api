@@ -31,7 +31,10 @@ public class Subject {
 
     @JsonManagedReference
     @ManyToMany(mappedBy = "subjectsTaught", fetch = FetchType.EAGER)
-    Set<User> professors = new HashSet<User>();
+    private Set<User> professors = new HashSet<User>();
+
+    @OneToMany(mappedBy = "subject")
+    private Set<Grade> grades = new HashSet<>();
 
     public Subject(String name, String acronym, YearOfStudy yearOfStudy, Semester semester) {
         this.name = name;

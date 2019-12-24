@@ -5,32 +5,34 @@ import io.github.stefancostin.gradeguard.utils.GradeType;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "grades")
 public class Grade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @ManyToOne
-    @JoinColumn(name = "subject_id")
-    private int subjectId;
-    @ManyToOne
-    @JoinColumn(name = "student_id")
-    private int studentId;
-    @ManyToOne
-    @JoinColumn(name = "student_id")
-    private int professorId;
     @Column(name = "grade", nullable = false)
     private int grade;
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "grade_type", nullable = true)
     private GradeType gradeType;
+    @ManyToOne
+    @JoinColumn(name = "subject_id")
+    private Subject subject;
+    @ManyToOne
+    @JoinColumn(name = "student_id")
+    private User student;
+    @ManyToOne
+    @JoinColumn(name = "professor_id")
+    private User professor;
 
-    public Grade(int subjectId, int studentId, int professorId, int grade, GradeType gradeType) {
-        this.subjectId = subjectId;
-        this.studentId = studentId;
-        this.professorId = professorId;
+    public Grade(int id, int grade, GradeType gradeType, Subject subject, User student, User professor) {
+        this.id = id;
         this.grade = grade;
         this.gradeType = gradeType;
+        this.subject = subject;
+        this.student = student;
+        this.professor = professor;
     }
 
     public Grade() { }
@@ -41,30 +43,6 @@ public class Grade {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getSubjectId() {
-        return subjectId;
-    }
-
-    public void setSubjectId(int subjectId) {
-        this.subjectId = subjectId;
-    }
-
-    public int getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(int studentId) {
-        this.studentId = studentId;
-    }
-
-    public int getProfessorId() {
-        return professorId;
-    }
-
-    public void setProfessorId(int professorId) {
-        this.professorId = professorId;
     }
 
     public int getGrade() {
@@ -83,4 +61,27 @@ public class Grade {
         this.gradeType = gradeType;
     }
 
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
+    public User getStudent() {
+        return student;
+    }
+
+    public void setStudent(User student) {
+        this.student = student;
+    }
+
+    public User getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(User professor) {
+        this.professor = professor;
+    }
 }
