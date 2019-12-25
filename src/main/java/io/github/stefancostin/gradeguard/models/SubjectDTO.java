@@ -16,6 +16,7 @@ public class SubjectDTO {
     private YearOfStudy yearOfStudy;
     private Semester semester;
     private List<UserDTO> professors;
+    private List<GradeDTO> grades;
 
     public SubjectDTO(Subject subject) {
         this.id = subject.getId();
@@ -23,9 +24,8 @@ public class SubjectDTO {
         this.acronym = subject.getAcronym();
         this.yearOfStudy = subject.getYearOfStudy();
         this.semester = subject.getSemester();
-        this.professors = convertFromModelToDTO(subject.getProfessors());
-        if (!this.professors.isEmpty())
-        System.out.println(("this: " + this.professors.get(0).getId()));
+        this.professors = UserDTO.convertFromModelToDTO(subject.getProfessors());
+        this.grades = GradeDTO.convertFromModelToDTO(subject.getGrades());
     }
 
     public SubjectDTO(int id, String name, String acronym, YearOfStudy yearOfStudy, Semester semester) {
@@ -82,19 +82,26 @@ public class SubjectDTO {
         this.professors = professors;
     }
 
-    private List<UserDTO> convertFromModelToDTO(Set<User> professorsModelSet) {
-        List<UserDTO> professorsList = new ArrayList<>();
-        for (User professorModel : professorsModelSet) {
-            UserDTO professor = new UserDTO();
-            professor.setId(professorModel.getId());
-            professor.setFirstName(professorModel.getFirstName());
-            professor.setLastName(professorModel.getLastName());
-            professor.setEmail(professorModel.getEmail());
-            professor.setPassword(professorModel.getPassword());
-            professor.setRole(professorModel.getRole());
-            professorsList.add(professor);
+    public List<GradeDTO> getGrades() {
+        return grades;
+    }
+
+    public void setGrades(List<GradeDTO> grades) {
+        this.grades = grades;
+    }
+
+    public static List<SubjectDTO> convertFromModelToDTO(Set<Subject> subjectsModelSet) {
+        List<SubjectDTO> subjectsList = new ArrayList<>();
+        for (Subject subjectModel : subjectsModelSet) {
+            SubjectDTO subject = new SubjectDTO();
+            subject.setId(subjectModel.getId());
+            subject.setName(subjectModel.getName());
+            subject.setAcronym(subjectModel.getAcronym());
+            subject.setYearOfStudy(subjectModel.getYearOfStudy());
+            subject.setSemester(subjectModel.getSemester());
+            subjectsList.add(subject);
         }
-        return professorsList;
+        return subjectsList;
     }
     
 }

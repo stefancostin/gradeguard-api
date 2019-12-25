@@ -1,5 +1,6 @@
 package io.github.stefancostin.gradeguard.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.github.stefancostin.gradeguard.models.GradeDTO;
 import io.github.stefancostin.gradeguard.utils.GradeType;
 

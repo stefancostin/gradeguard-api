@@ -4,15 +4,15 @@ import io.github.stefancostin.gradeguard.entities.Grade;
 import io.github.stefancostin.gradeguard.entities.Subject;
 import io.github.stefancostin.gradeguard.entities.User;
 import io.github.stefancostin.gradeguard.models.GradeDTO;
-import io.github.stefancostin.gradeguard.models.SubjectDTO;
 import io.github.stefancostin.gradeguard.repositories.IGradeRepository;
 import io.github.stefancostin.gradeguard.repositories.ISubjectRepository;
 import io.github.stefancostin.gradeguard.repositories.IUserRepository;
+import io.github.stefancostin.gradeguard.utils.Semester;
+import io.github.stefancostin.gradeguard.utils.YearOfStudy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class GradeService {
@@ -25,13 +25,17 @@ public class GradeService {
     ISubjectRepository subjectRepository;
 
     public List<Grade> getGradesBySubject(int subjectId) {
-        List<Grade> grades = gradeRepository.findBySubjectId(subjectId);
-        return grades;
+        return gradeRepository.findBySubjectId(subjectId);
+    }
+
+    public List<Grade> getStudentGradesByYearAndSemester(int studentId, int yearOfStudy, int semester) {
+        YearOfStudy yearEnum = YearOfStudy.values()[yearOfStudy];
+        Semester semesterEnum = Semester.values()[semester];
+        return gradeRepository.findByStudentIdAndSubjectYearOfStudyAndSubjectSemester(studentId, yearEnum, semesterEnum);
     }
 
     public List<Grade> getGradesByStudent(int studentId) {
-        List<Grade> grades = gradeRepository.findByStudentId(studentId);
-        return grades;
+        return gradeRepository.findByStudentId(studentId);
     }
 
     public Grade insertGrade(GradeDTO grade) {

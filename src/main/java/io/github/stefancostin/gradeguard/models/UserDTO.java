@@ -26,7 +26,7 @@ public class UserDTO {
         this.email = user.getEmail();
         this.role = user.getRole();
         this.yearOfStudy = user.getYearOfStudy();
-        this.subjectsTaught = convertFromModelToDTO(user.getSubjectsTaught());
+        this.subjectsTaught = SubjectDTO.convertFromModelToDTO(user.getSubjectsTaught());
     }
 
     public UserDTO(int id, String firstName, String lastName, String email, Role role, YearOfStudy yearOfStudy) {
@@ -90,18 +90,19 @@ public class UserDTO {
         this.yearOfStudy = yearOfStudy;
     }
 
-    private List<SubjectDTO> convertFromModelToDTO(Set<Subject> subjectsModelSet) {
-        List<SubjectDTO> subjectsList = new ArrayList<>();
-        for (Subject subjectModel : subjectsModelSet) {
-            SubjectDTO subject = new SubjectDTO();
-            subject.setId(subjectModel.getId());
-            subject.setName(subjectModel.getName());
-            subject.setAcronym(subjectModel.getAcronym());
-            subject.setYearOfStudy(subjectModel.getYearOfStudy());
-            subject.setSemester(subjectModel.getSemester());
-            subjectsList.add(subject);
+    public static List<UserDTO> convertFromModelToDTO(Set<User> userModelSet) {
+        List<UserDTO> usersList = new ArrayList<>();
+        for (User userModel : userModelSet) {
+            UserDTO professor = new UserDTO();
+            professor.setId(userModel.getId());
+            professor.setFirstName(userModel.getFirstName());
+            professor.setLastName(userModel.getLastName());
+            professor.setEmail(userModel.getEmail());
+            professor.setPassword(userModel.getPassword());
+            professor.setRole(userModel.getRole());
+            usersList.add(professor);
         }
-        return subjectsList;
+        return usersList;
     }
 
 }

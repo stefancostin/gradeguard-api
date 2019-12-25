@@ -26,6 +26,11 @@ public class SubjectController {
         return subjectService.getSubjectById(id);
     }
 
+    @RequestMapping(value = "student/{studentId}", method = RequestMethod.GET)
+    public List<SubjectDTO> getSubjectsByStudentId(@PathVariable("studentId") int studentId) {
+        return subjectService.getSubjectsByStudentId(studentId);
+    }
+
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public SubjectDTO insertSubject(@RequestBody SubjectDTO subject) {
         return subjectService.insertSubject(subject);

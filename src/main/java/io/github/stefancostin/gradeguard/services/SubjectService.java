@@ -1,13 +1,11 @@
 package io.github.stefancostin.gradeguard.services;
 
 import io.github.stefancostin.gradeguard.entities.Subject;
-import io.github.stefancostin.gradeguard.entities.User;
 import io.github.stefancostin.gradeguard.models.SubjectDTO;
 import io.github.stefancostin.gradeguard.repositories.ISubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +22,11 @@ public class SubjectService {
     public SubjectDTO getSubjectById(int id) {
         Subject subjectModel = subjectRepository.findById(id).orElse(null);
         return new SubjectDTO(subjectModel);
+    }
+
+    public List<SubjectDTO> getSubjectsByStudentId(int studentId) {
+        return subjectRepository.findByGradesStudentId(studentId)
+                .stream().map(subject -> new SubjectDTO(subject)).collect(Collectors.toList());
     }
 
     public SubjectDTO insertSubject(SubjectDTO subject) {

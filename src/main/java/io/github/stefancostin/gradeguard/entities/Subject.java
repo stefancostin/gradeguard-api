@@ -1,7 +1,5 @@
 package io.github.stefancostin.gradeguard.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.github.stefancostin.gradeguard.models.SubjectDTO;
 import io.github.stefancostin.gradeguard.utils.Semester;
@@ -33,7 +31,7 @@ public class Subject {
     @ManyToMany(mappedBy = "subjectsTaught", fetch = FetchType.EAGER)
     private Set<User> professors = new HashSet<User>();
 
-    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "subject", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Grade> grades = new HashSet<>();
 
     public Subject(String name, String acronym, YearOfStudy yearOfStudy, Semester semester) {
@@ -91,6 +89,18 @@ public class Subject {
 
     public Set<User> getProfessors() {
         return professors;
+    }
+
+    public void setProfessors(Set<User> professors) {
+        this.professors = professors;
+    }
+
+    public Set<Grade> getGrades() {
+        return grades;
+    }
+
+    public void setGrades(Set<Grade> grades) {
+        this.grades = grades;
     }
 
     public void addProfessor(User professor) {

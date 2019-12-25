@@ -4,6 +4,8 @@ import io.github.stefancostin.gradeguard.entities.Grade;
 import io.github.stefancostin.gradeguard.models.GradeDTO;
 import io.github.stefancostin.gradeguard.models.SubjectDTO;
 import io.github.stefancostin.gradeguard.services.GradeService;
+import io.github.stefancostin.gradeguard.utils.Semester;
+import io.github.stefancostin.gradeguard.utils.YearOfStudy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,13 @@ public class GradeController {
     @RequestMapping(value = "/student/{studentId}", method = RequestMethod.GET)
     public List<Grade> getStudentGrades(@PathVariable("studentId") int studentId) {
         return gradeService.getGradesByStudent(studentId);
+    }
+
+    @RequestMapping(value = "/student/{studentId}/{yearOfStudy}/{semester}", method = RequestMethod.GET)
+    public List<Grade> getStudentGradesByYearAndSemester(@PathVariable("studentId") int studentId,
+                                        @PathVariable("yearOfStudy") int yearOfStudy,
+                                        @PathVariable("semester") int semester) {
+        return gradeService.getStudentGradesByYearAndSemester(studentId, yearOfStudy, semester);
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
