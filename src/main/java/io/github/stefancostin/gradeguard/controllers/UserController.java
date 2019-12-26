@@ -1,6 +1,8 @@
 package io.github.stefancostin.gradeguard.controllers;
 
+import io.github.stefancostin.gradeguard.entities.Grade;
 import io.github.stefancostin.gradeguard.entities.User;
+import io.github.stefancostin.gradeguard.models.SubjectDTO;
 import io.github.stefancostin.gradeguard.models.UserDTO;
 import io.github.stefancostin.gradeguard.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +51,16 @@ public class UserController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void removeUserById(@PathVariable("id") int id) {
         userService.removeUserById(id);
+    }
+
+    @RequestMapping(value = "/professor-data/{professorId}", method = RequestMethod.GET)
+    public UserDTO getProfessorData(@PathVariable("professorId") int professorId) {
+        return userService.getSubjectsByProfessorId(professorId);
+    }
+
+    @RequestMapping(value = "/students-by-subject/{subjectId}", method = RequestMethod.GET)
+    public List<UserDTO> getStudentsBySubject(@PathVariable("subjectId") int subjectId) {
+        return userService.getStudentsBySubject(subjectId);
     }
 
 }

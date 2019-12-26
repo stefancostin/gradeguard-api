@@ -18,6 +18,8 @@ public class UserDTO {
     private Role role;
     private YearOfStudy yearOfStudy;
     private List<SubjectDTO> subjectsTaught;
+    private List<GradeDTO> studentGrades;
+    private List<GradeDTO> professorGrades;
 
     public UserDTO(User user) {
         this.id = user.getId();
@@ -27,6 +29,8 @@ public class UserDTO {
         this.role = user.getRole();
         this.yearOfStudy = user.getYearOfStudy();
         this.subjectsTaught = SubjectDTO.convertFromModelToDTO(user.getSubjectsTaught());
+        this.studentGrades = GradeDTO.convertFromModelToDTO(user.getStudentGrades());
+        this.professorGrades = GradeDTO.convertFromModelToDTO(user.getProfessorGrades());
     }
 
     public UserDTO(int id, String firstName, String lastName, String email, Role role, YearOfStudy yearOfStudy) {
@@ -88,6 +92,30 @@ public class UserDTO {
 
     public void setYearOfStudy(YearOfStudy yearOfStudy) {
         this.yearOfStudy = yearOfStudy;
+    }
+
+    public List<SubjectDTO> getSubjectsTaught() {
+        return subjectsTaught;
+    }
+
+    public void setSubjectsTaught(List<SubjectDTO> subjectsTaught) {
+        this.subjectsTaught = subjectsTaught;
+    }
+
+    public List<GradeDTO> getStudentGrades() {
+        return studentGrades;
+    }
+
+    public void setStudentGrades(List<GradeDTO> studentGrades) {
+        this.studentGrades = studentGrades;
+    }
+
+    public List<GradeDTO> getProfessorGrades() {
+        return professorGrades;
+    }
+
+    public void setProfessorGrades(List<GradeDTO> professorGrades) {
+        this.professorGrades = professorGrades;
     }
 
     public static List<UserDTO> convertFromModelToDTO(Set<User> userModelSet) {

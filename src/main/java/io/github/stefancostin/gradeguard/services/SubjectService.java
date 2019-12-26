@@ -24,7 +24,7 @@ public class SubjectService {
         return new SubjectDTO(subjectModel);
     }
 
-    public List<SubjectDTO> getSubjectsByStudentId(int studentId) {
+    public List<SubjectDTO> getSubjectsAndGradesByStudentId(int studentId) {
         return subjectRepository.findByGradesStudentId(studentId)
                 .stream().map(subject -> new SubjectDTO(subject)).collect(Collectors.toList());
     }

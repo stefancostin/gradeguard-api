@@ -28,7 +28,7 @@ public class SubjectController {
 
     @RequestMapping(value = "student/{studentId}", method = RequestMethod.GET)
     public List<SubjectDTO> getSubjectsByStudentId(@PathVariable("studentId") int studentId) {
-        return subjectService.getSubjectsByStudentId(studentId);
+        return subjectService.getSubjectsAndGradesByStudentId(studentId);
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)

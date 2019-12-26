@@ -1,9 +1,14 @@
 package io.github.stefancostin.gradeguard.services;
 
+import io.github.stefancostin.gradeguard.entities.Subject;
 import io.github.stefancostin.gradeguard.entities.User;
+import io.github.stefancostin.gradeguard.models.SubjectDTO;
 import io.github.stefancostin.gradeguard.models.UserDTO;
+import io.github.stefancostin.gradeguard.repositories.ISubjectRepository;
 import io.github.stefancostin.gradeguard.repositories.IUserRepository;
 import io.github.stefancostin.gradeguard.utils.Role;
+import io.github.stefancostin.gradeguard.utils.Semester;
+import io.github.stefancostin.gradeguard.utils.YearOfStudy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +20,8 @@ public class UserService {
 
     @Autowired
     IUserRepository userRepository;
+    @Autowired
+    ISubjectRepository subjectRepository;
 
     public List<UserDTO> getUsers() {
         return userRepository.findAll().stream().map(user -> new UserDTO(user)).collect(Collectors.toList());
@@ -52,6 +59,20 @@ public class UserService {
 
     public void removeUserById(int id) {
         userRepository.deleteById(id);
+    }
+
+
+    public UserDTO getSubjectsByProfessorId(int professorId) {
+        User professor = userRepository.findById(professorId).orElse(null);
+        return new UserDTO(professor);
+    }
+
+    public List<UserDTO> getStudentsBySubject(int subjectId) {
+        Subject subject = subjectRepository.findById(subjectId).orElse(null);
+        YearOfStudy yearOfStudy = subject.getYearOfStudy();
+
+        return userRepository.findByYearOfStudyAndStudentGradesSubjectId(yearOfStudy, subjectId)
+                .stream().map(user -> new UserDTO(user)).collect(Collectors.toList());
     }
 
 }

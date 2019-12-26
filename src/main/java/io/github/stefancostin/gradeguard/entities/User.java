@@ -41,10 +41,10 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "professor_id"))
     private Set<Subject> subjectsTaught = new HashSet<Subject>();
 
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Grade> studentGrades = new HashSet<>();
 
-    @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "professor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Grade> professorGrades = new HashSet<>();
 
     public User(int id, String firstName, String lastName, String email, String password, Role role, YearOfStudy yearOfStudy) {
@@ -71,6 +71,10 @@ public class User {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -123,6 +127,26 @@ public class User {
 
     public Set<Subject> getSubjectsTaught() {
         return subjectsTaught;
+    }
+
+    public void setSubjectsTaught(Set<Subject> subjectsTaught) {
+        this.subjectsTaught = subjectsTaught;
+    }
+
+    public Set<Grade> getStudentGrades() {
+        return studentGrades;
+    }
+
+    public void setStudentGrades(Set<Grade> studentGrades) {
+        this.studentGrades = studentGrades;
+    }
+
+    public Set<Grade> getProfessorGrades() {
+        return professorGrades;
+    }
+
+    public void setProfessorGrades(Set<Grade> professorGrades) {
+        this.professorGrades = professorGrades;
     }
 
     public void addSubjectTaught(Subject subject) {
