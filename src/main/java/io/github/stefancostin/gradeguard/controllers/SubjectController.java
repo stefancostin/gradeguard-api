@@ -48,10 +48,4 @@ public class SubjectController {
         return subjectService.getSubjectsByYearAndSemester(yearOfStudy, semester);
     }
 
-    /** Student View -- Populates Table */
-    @RequestMapping(value = "student/{studentId}", method = RequestMethod.GET)
-    public List<SubjectDTO> getSubjectsByStudentId(@PathVariable("studentId") int studentId) {
-        return subjectService.getSubjectsAndGradesByStudentId(studentId);
-    }
-
 }

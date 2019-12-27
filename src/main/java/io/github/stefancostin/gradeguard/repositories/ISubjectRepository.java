@@ -13,4 +13,7 @@ public interface ISubjectRepository extends JpaRepository<Subject, Integer> {
 
     public List<Subject> findByYearOfStudyAndSemester(YearOfStudy yearOfStudy, Semester semester);
 
+    public List<Subject> findByYearOfStudyAndSemesterAndGradesStudentId(YearOfStudy yearOfStudy, Semester semester,
+                                                                        int studentId);
+
 }

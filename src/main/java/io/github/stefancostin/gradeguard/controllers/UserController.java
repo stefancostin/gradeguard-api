@@ -1,10 +1,12 @@
 package io.github.stefancostin.gradeguard.controllers;
 
-import io.github.stefancostin.gradeguard.entities.Grade;
-import io.github.stefancostin.gradeguard.entities.User;
+import io.github.stefancostin.gradeguard.models.StudentGradesDTO;
 import io.github.stefancostin.gradeguard.models.SubjectDTO;
 import io.github.stefancostin.gradeguard.models.UserDTO;
+import io.github.stefancostin.gradeguard.services.SubjectService;
 import io.github.stefancostin.gradeguard.services.UserService;
+import io.github.stefancostin.gradeguard.utils.Semester;
+import io.github.stefancostin.gradeguard.utils.YearOfStudy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private SubjectService subjectService;
 
     @RequestMapping(method = RequestMethod.GET)
     public List<UserDTO> getUsers() {
@@ -66,6 +70,14 @@ public class UserController {
         return userService.getStudentData(studentId);
     }
 
+    /** Student View -- Populates Table */
+    @RequestMapping(value = "/students/{studentId}/grades", method = RequestMethod.GET)
+    public List<StudentGradesDTO> getStudentGrades(@PathVariable("studentId") int studentId,
+                                                             @RequestParam(name = "year") YearOfStudy yearOfStudy,
+                                                             @RequestParam(name = "semester") Semester semester) {
+        return subjectService.getStudentGrades(studentId, yearOfStudy, semester);
+    }
+
     /** Professor View -- On Init */
     @RequestMapping(value = "/professor-data/{professorId}", method = RequestMethod.GET)
     public List<SubjectDTO> getProfessorData(@PathVariable("professorId") int professorId) {
@@ -73,7 +85,7 @@ public class UserController {
     }
 
     /** Professor View -- Populates Table */
-    @RequestMapping(value = "/students-by-subject/{subjectId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/student-grades/{subjectId}", method = RequestMethod.GET)
     public List<UserDTO> getStudentsBySubject(@PathVariable("subjectId") int subjectId) {
         return userService.getStudentsBySubject(subjectId);
     }
