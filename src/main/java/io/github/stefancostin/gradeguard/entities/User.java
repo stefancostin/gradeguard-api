@@ -34,7 +34,7 @@ public class User {
     private YearOfStudy yearOfStudy;
 
     @JsonBackReference
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "professors_subjects",
             joinColumns = @JoinColumn(name = "subject_id"),

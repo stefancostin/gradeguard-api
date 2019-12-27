@@ -19,4 +19,6 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
 
     List<User> findByYearOfStudyAndStudentGradesSubjectId(YearOfStudy yearOfStudy, int subjectId);
 
+    List<User> findByYearOfStudyAndRole(YearOfStudy yearOfStudy, Role role);
+
 }

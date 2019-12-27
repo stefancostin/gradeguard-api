@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,10 +62,15 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    public UserDTO getStudentData(int studentId) {
+        User student = userRepository.findById(studentId).orElse(null);
+        return new UserDTO(student);
+    }
 
-    public UserDTO getSubjectsByProfessorId(int professorId) {
+    public List<SubjectDTO> getSubjectsTaughtByProfessor(int professorId) {
         User professor = userRepository.findById(professorId).orElse(null);
-        return new UserDTO(professor);
+        return professor.getSubjectsTaught()
+                .stream().map(subject -> new SubjectDTO(subject)).collect(Collectors.toList());
     }
 
     public List<UserDTO> getStudentsBySubject(int subjectId) {
@@ -73,6 +79,13 @@ public class UserService {
 
         return userRepository.findByYearOfStudyAndStudentGradesSubjectId(yearOfStudy, subjectId)
                 .stream().map(user -> new UserDTO(user)).collect(Collectors.toList());
+    }
+
+    public List<UserDTO> getStudentsByYearOfStudy(int yearOfStudyIndex) {
+        YearOfStudy yearOfStudy = YearOfStudy.values()[yearOfStudyIndex];
+        Role studentRole = Role.STUDENT;
+        return userRepository.findByYearOfStudyAndRole(yearOfStudy, studentRole)
+                .stream().map(student -> new UserDTO(student)).collect(Collectors.toList());
     }
 
 }

@@ -23,16 +23,6 @@ public class UserController {
         return userService.getUsers();
     }
 
-    @RequestMapping(value = "/students", method = RequestMethod.GET)
-    public List<UserDTO> getStudents() {
-        return userService.getStudents();
-    }
-
-    @RequestMapping(value = "/professors", method = RequestMethod.GET)
-    public List<UserDTO> getProfessors() {
-        return userService.getProfessors();
-    }
-
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public UserDTO getUserById(@PathVariable("id") int id) {
         return userService.getUserById(id);
@@ -53,11 +43,36 @@ public class UserController {
         userService.removeUserById(id);
     }
 
-    @RequestMapping(value = "/professor-data/{professorId}", method = RequestMethod.GET)
-    public UserDTO getProfessorData(@PathVariable("professorId") int professorId) {
-        return userService.getSubjectsByProfessorId(professorId);
+    @RequestMapping(value = "admin/students", method = RequestMethod.GET)
+    public List<UserDTO> getStudents() {
+        return userService.getStudents();
     }
 
+    /** Admin View -- Populates Professors Table */
+    @RequestMapping(value = "admin/professors", method = RequestMethod.GET)
+    public List<UserDTO> getProfessors() {
+        return userService.getProfessors();
+    }
+
+    /** Admin View -- Populates Students Table */
+    @RequestMapping(value = "/admin/students/{yearOfStudy}")
+    public List<UserDTO> getStudentsByYearOfStudy(@PathVariable("yearOfStudy") int yearOfStudy) {
+        return userService.getStudentsByYearOfStudy(yearOfStudy);
+    }
+
+    /** Student View -- On Init*/
+    @RequestMapping(value = "/student-data/{studentId}", method = RequestMethod.GET)
+    public UserDTO getStudentData(@PathVariable("studentId") int studentId) {
+        return userService.getStudentData(studentId);
+    }
+
+    /** Professor View -- On Init */
+    @RequestMapping(value = "/professor-data/{professorId}", method = RequestMethod.GET)
+    public List<SubjectDTO> getProfessorData(@PathVariable("professorId") int professorId) {
+        return userService.getSubjectsTaughtByProfessor(professorId);
+    }
+
+    /** Professor View -- Populates Table */
     @RequestMapping(value = "/students-by-subject/{subjectId}", method = RequestMethod.GET)
     public List<UserDTO> getStudentsBySubject(@PathVariable("subjectId") int subjectId) {
         return userService.getStudentsBySubject(subjectId);

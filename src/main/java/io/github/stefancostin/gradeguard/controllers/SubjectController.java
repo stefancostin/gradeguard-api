@@ -26,11 +26,6 @@ public class SubjectController {
         return subjectService.getSubjectById(id);
     }
 
-    @RequestMapping(value = "student/{studentId}", method = RequestMethod.GET)
-    public List<SubjectDTO> getSubjectsByStudentId(@PathVariable("studentId") int studentId) {
-        return subjectService.getSubjectsAndGradesByStudentId(studentId);
-    }
-
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public SubjectDTO insertSubject(@RequestBody SubjectDTO subject) {
         return subjectService.insertSubject(subject);
@@ -44,6 +39,19 @@ public class SubjectController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void removeSubjectById(@PathVariable("id") int id) {
         subjectService.removeSubjectById(id);
+    }
+
+    /** Admin View -- Populates Subjects Table */
+    @RequestMapping(value = "admin/{yearOfStudy}/{semester}", method = RequestMethod.GET)
+    public List<SubjectDTO> getSubjectsByYearAndSemester(@PathVariable("yearOfStudy") int yearOfStudy,
+                                                         @PathVariable("semester") int semester) {
+        return subjectService.getSubjectsByYearAndSemester(yearOfStudy, semester);
+    }
+
+    /** Student View -- Populates Table */
+    @RequestMapping(value = "student/{studentId}", method = RequestMethod.GET)
+    public List<SubjectDTO> getSubjectsByStudentId(@PathVariable("studentId") int studentId) {
+        return subjectService.getSubjectsAndGradesByStudentId(studentId);
     }
 
 }

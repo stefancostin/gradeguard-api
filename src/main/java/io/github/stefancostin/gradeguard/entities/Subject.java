@@ -28,10 +28,10 @@ public class Subject {
     private Semester semester;
 
     @JsonManagedReference
-    @ManyToMany(mappedBy = "subjectsTaught", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "subjectsTaught", fetch = FetchType.LAZY)
     private Set<User> professors = new HashSet<User>();
 
-    @OneToMany(mappedBy = "subject", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "subject", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Grade> grades = new HashSet<>();
 
     public Subject(String name, String acronym, YearOfStudy yearOfStudy, Semester semester) {

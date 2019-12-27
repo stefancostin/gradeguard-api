@@ -18,13 +18,13 @@ public class Grade {
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "grade_type", nullable = true)
     private GradeType gradeType;
-    @ManyToOne(cascade = CascadeType.DETACH)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "subject_id")
     private Subject subject;
-    @ManyToOne(cascade = CascadeType.DETACH)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "student_id")
     private User student;
-    @ManyToOne(cascade = CascadeType.DETACH)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "professor_id")
     private User professor;
 
