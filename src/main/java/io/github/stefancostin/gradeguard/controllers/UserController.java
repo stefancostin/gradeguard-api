@@ -1,6 +1,7 @@
 package io.github.stefancostin.gradeguard.controllers;
 
 import io.github.stefancostin.gradeguard.models.StudentGradesDTO;
+import io.github.stefancostin.gradeguard.models.SubjectGradesDTO;
 import io.github.stefancostin.gradeguard.models.SubjectDTO;
 import io.github.stefancostin.gradeguard.models.UserDTO;
 import io.github.stefancostin.gradeguard.services.SubjectService;
@@ -72,21 +73,21 @@ public class UserController {
 
     /** Student View -- Populates Table */
     @RequestMapping(value = "/students/{studentId}/grades", method = RequestMethod.GET)
-    public List<StudentGradesDTO> getStudentGrades(@PathVariable("studentId") int studentId,
-                                                             @RequestParam(name = "year") YearOfStudy yearOfStudy,
-                                                             @RequestParam(name = "semester") Semester semester) {
+    public List<SubjectGradesDTO> getStudentGrades(@PathVariable("studentId") int studentId,
+                                                   @RequestParam(name = "year") YearOfStudy yearOfStudy,
+                                                   @RequestParam(name = "semester") Semester semester) {
         return subjectService.getStudentGrades(studentId, yearOfStudy, semester);
     }
 
     /** Professor View -- On Init */
-    @RequestMapping(value = "/professor-data/{professorId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/professors/{professorId}/subjects", method = RequestMethod.GET)
     public List<SubjectDTO> getProfessorData(@PathVariable("professorId") int professorId) {
         return userService.getSubjectsTaughtByProfessor(professorId);
     }
 
     /** Professor View -- Populates Table */
-    @RequestMapping(value = "/student-grades/{subjectId}", method = RequestMethod.GET)
-    public List<UserDTO> getStudentsBySubject(@PathVariable("subjectId") int subjectId) {
+    @RequestMapping(value = "/professors/subjects/{subjectId}/students", method = RequestMethod.GET)
+    public List<StudentGradesDTO> getStudentsBySubject(@PathVariable("subjectId") int subjectId) {
         return userService.getStudentsBySubject(subjectId);
     }
 

@@ -6,7 +6,7 @@ import io.github.stefancostin.gradeguard.utils.GradeType;
 
 import java.util.Set;
 
-public class MergedGradesDTO {
+public class GradeCollectionDTO {
     private int gradeExam;
     private int gradeFinal;
     private int gradeLaboratory;
@@ -44,9 +44,7 @@ public class MergedGradesDTO {
         this.gradeProject = gradeProject;
     }
 
-    protected void setGrades(Subject subject) {
-        Set<Grade> grades = subject.getGrades();
-
+    protected void setGrades(Set<Grade> grades) {
         for (Grade grade : grades) {
             GradeType gradeType = grade.getGradeType();
 

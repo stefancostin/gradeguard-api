@@ -1,7 +1,7 @@
 package io.github.stefancostin.gradeguard.services;
 
 import io.github.stefancostin.gradeguard.entities.Subject;
-import io.github.stefancostin.gradeguard.models.StudentGradesDTO;
+import io.github.stefancostin.gradeguard.models.SubjectGradesDTO;
 import io.github.stefancostin.gradeguard.models.SubjectDTO;
 import io.github.stefancostin.gradeguard.repositories.ISubjectRepository;
 import io.github.stefancostin.gradeguard.utils.Semester;
@@ -34,9 +34,9 @@ public class SubjectService {
                 .stream().map(subject -> new SubjectDTO(subject)).collect(Collectors.toList());
     }
 
-    public List<StudentGradesDTO> getStudentGrades(int studentId, YearOfStudy yearOfStudy, Semester semester) {
+    public List<SubjectGradesDTO> getStudentGrades(int studentId, YearOfStudy yearOfStudy, Semester semester) {
         return subjectRepository.findByYearOfStudyAndSemesterAndGradesStudentId(yearOfStudy, semester, studentId)
-                .stream().map(subject -> new StudentGradesDTO(subject)).collect(Collectors.toList());
+                .stream().map(subject -> new SubjectGradesDTO(subject)).collect(Collectors.toList());
     }
 
     public SubjectDTO insertSubject(SubjectDTO subject) {
