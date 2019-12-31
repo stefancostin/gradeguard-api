@@ -1,5 +1,6 @@
 package io.github.stefancostin.gradeguard.services;
 
+import io.github.stefancostin.gradeguard.entities.Grade;
 import io.github.stefancostin.gradeguard.entities.Subject;
 import io.github.stefancostin.gradeguard.entities.User;
 import io.github.stefancostin.gradeguard.models.StudentGradesDTO;
@@ -79,11 +80,19 @@ public class UserService {
         YearOfStudy yearOfStudy = subject.getYearOfStudy();
 
         return userRepository.findByYearOfStudyAndStudentGradesSubjectId(yearOfStudy, subjectId)
-                .stream().map(user -> new StudentGradesDTO(user)).collect(Collectors.toList());
+                .stream().map(user -> {
+
+                    Set<Grade> filteredGrades = user.getStudentGrades().stream().filter((grade -> {
+                        return grade.getSubject().getId() == subjectId;
+                    })).collect(Collectors.toSet());
+
+                    user.setStudentGrades(filteredGrades);
+                    return new StudentGradesDTO((user));
+
+                }).collect(Collectors.toList());
     }
 
-    public List<UserDTO> getStudentsByYearOfStudy(int yearOfStudyIndex) {
-        YearOfStudy yearOfStudy = YearOfStudy.values()[yearOfStudyIndex];
+    public List<UserDTO> getStudentsByYearOfStudy(YearOfStudy yearOfStudy) {
         Role studentRole = Role.STUDENT;
         return userRepository.findByYearOfStudyAndRole(yearOfStudy, studentRole)
                 .stream().map(student -> new UserDTO(student)).collect(Collectors.toList());

@@ -61,7 +61,7 @@ public class UserController {
 
     /** Admin View -- Populates Students Table */
     @RequestMapping(value = "/admin/students/{yearOfStudy}")
-    public List<UserDTO> getStudentsByYearOfStudy(@PathVariable("yearOfStudy") int yearOfStudy) {
+    public List<UserDTO> getStudentsByYearOfStudy(@PathVariable("yearOfStudy") YearOfStudy yearOfStudy) {
         return userService.getStudentsByYearOfStudy(yearOfStudy);
     }
 
@@ -85,7 +85,7 @@ public class UserController {
         return userService.getSubjectsTaughtByProfessor(professorId);
     }
 
-    /** Professor View -- Populates Table */
+    /** Professor View -- Populates Table && CRUD OPS Dropdown */
     @RequestMapping(value = "/professors/subjects/{subjectId}/students", method = RequestMethod.GET)
     public List<StudentGradesDTO> getStudentsBySubject(@PathVariable("subjectId") int subjectId) {
         return userService.getStudentsBySubject(subjectId);
