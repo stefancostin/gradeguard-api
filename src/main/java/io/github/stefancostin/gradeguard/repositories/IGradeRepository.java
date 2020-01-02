@@ -1,6 +1,7 @@
 package io.github.stefancostin.gradeguard.repositories;
 
 import io.github.stefancostin.gradeguard.entities.Grade;
+import io.github.stefancostin.gradeguard.utils.GradeType;
 import io.github.stefancostin.gradeguard.utils.Semester;
 import io.github.stefancostin.gradeguard.utils.YearOfStudy;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,5 +15,7 @@ public interface IGradeRepository extends JpaRepository<Grade, Integer> {
     List<Grade> findByStudentId(int studentId);
 
     List<Grade> findByStudentIdAndSubjectYearOfStudyAndSubjectSemester(int studentId, YearOfStudy yearOfStudy, Semester semester);
+
+    List<Grade> findByStudentIdAndSubjectIdAndGradeType(int studentId, int subjectId, GradeType gradeType);
 
 }

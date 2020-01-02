@@ -4,9 +4,11 @@ import io.github.stefancostin.gradeguard.entities.Grade;
 import io.github.stefancostin.gradeguard.entities.Subject;
 import io.github.stefancostin.gradeguard.entities.User;
 import io.github.stefancostin.gradeguard.models.GradeDTO;
+import io.github.stefancostin.gradeguard.models.GradePersistenceDTO;
 import io.github.stefancostin.gradeguard.repositories.IGradeRepository;
 import io.github.stefancostin.gradeguard.repositories.ISubjectRepository;
 import io.github.stefancostin.gradeguard.repositories.IUserRepository;
+import io.github.stefancostin.gradeguard.utils.GradeType;
 import io.github.stefancostin.gradeguard.utils.Semester;
 import io.github.stefancostin.gradeguard.utils.YearOfStudy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,5 +71,75 @@ public class GradeService {
     }
 
     public void removeGradeById(int id) { gradeRepository.deleteById(id); }
+
+    public void persistGrades(GradePersistenceDTO grades) {
+        if (grades.getGradeExam() != null) {
+            persistSingleGrade(grades, GradeType.EXAM, grades.getGradeExam());
+        } else {
+            removeSingleGrade(grades, GradeType.EXAM);
+        }
+
+        if (grades.getGradeFinal() != null) {
+            persistSingleGrade(grades, GradeType.FINAL, grades.getGradeFinal());
+        } else {
+            removeSingleGrade(grades, GradeType.FINAL);
+        }
+
+        if (grades.getGradeLaboratory() != null) {
+            persistSingleGrade(grades, GradeType.LABORATORY, grades.getGradeLaboratory());
+        } else {
+            removeSingleGrade(grades, GradeType.LABORATORY);
+        }
+
+        if (grades.getGradeProject() != null) {
+            persistSingleGrade(grades, GradeType.PROJECT, grades.getGradeProject());
+        } else {
+            removeSingleGrade(grades, GradeType.PROJECT);
+        }
+    }
+
+    private List<Grade> getMatchingGrades(GradePersistenceDTO grades, GradeType gradeType) {
+        List<Grade> matchingGrades = gradeRepository.findByStudentIdAndSubjectIdAndGradeType(
+                grades.getStudentId(),
+                grades.getSubjectId(),
+                gradeType);
+
+        return matchingGrades;
+    }
+
+    private void persistSingleGrade(GradePersistenceDTO grades, GradeType gradeType, int gradeValue) {
+        GradeDTO grade = new GradeDTO();
+        grade.setSubjectId(grades.getSubjectId());
+        grade.setStudentId(grades.getStudentId());
+        grade.setProfessorId(grades.getProfessorId());
+        grade.setGradeType(gradeType);
+        grade.setGrade(gradeValue);
+
+        List<Grade> matchingGrades = getMatchingGrades(grades, gradeType);
+
+        // remove duplicate grades
+        if (matchingGrades.size() > 1) {
+            for (int i = 1; i < matchingGrades.size(); i++) {
+                this.removeGradeById(matchingGrades.get(i).getId());
+            }
+        }
+
+        if (matchingGrades.isEmpty()) {
+            this.insertGrade(grade);
+        } else {
+            this.updateGradeById(matchingGrades.get(0).getId(), grade);
+        }
+    }
+
+    private void removeSingleGrade(GradePersistenceDTO grades, GradeType gradeType) {
+        List<Grade> matchingGrades = getMatchingGrades(grades, gradeType);
+
+        // remove grade and all other duplicate grades of this type
+        if (matchingGrades.size() > 0) {
+            for (int i = 0; i < matchingGrades.size(); i++) {
+                this.removeGradeById(matchingGrades.get(i).getId());
+            }
+        }
+    }
 
 }

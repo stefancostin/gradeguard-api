@@ -1,7 +1,6 @@
 package io.github.stefancostin.gradeguard.models;
 
 import io.github.stefancostin.gradeguard.entities.Grade;
-import io.github.stefancostin.gradeguard.entities.Subject;
 import io.github.stefancostin.gradeguard.utils.GradeType;
 
 import java.util.Set;
@@ -11,6 +10,15 @@ public class GradeCollectionDTO {
     private int gradeFinal;
     private int gradeLaboratory;
     private int gradeProject;
+
+    public GradeCollectionDTO(int gradeExam, int gradeFinal, int gradeLaboratory, int gradeProject) {
+        this.gradeExam = gradeExam;
+        this.gradeFinal = gradeFinal;
+        this.gradeLaboratory = gradeLaboratory;
+        this.gradeProject = gradeProject;
+    }
+
+    public GradeCollectionDTO() { }
 
     public int getGradeExam() {
         return gradeExam;

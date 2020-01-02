@@ -34,6 +34,8 @@ public class GradeDTO {
         this.gradeType = grade.getGradeType();
     }
 
+    public GradeDTO() { }
+
     public int getId() {
         return id;
     }

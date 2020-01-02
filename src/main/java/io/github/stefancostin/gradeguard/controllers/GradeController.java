@@ -2,6 +2,7 @@ package io.github.stefancostin.gradeguard.controllers;
 
 import io.github.stefancostin.gradeguard.entities.Grade;
 import io.github.stefancostin.gradeguard.models.GradeDTO;
+import io.github.stefancostin.gradeguard.models.GradePersistenceDTO;
 import io.github.stefancostin.gradeguard.models.SubjectDTO;
 import io.github.stefancostin.gradeguard.services.GradeService;
 import io.github.stefancostin.gradeguard.utils.Semester;
@@ -49,6 +50,12 @@ public class GradeController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void removeGradeById(@PathVariable("id") int id) {
         gradeService.removeGradeById(id);
+    }
+
+    /** Professor View -- Persist Grades */
+    @RequestMapping(value = "/submit", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void persistGrades(@RequestBody GradePersistenceDTO grades) {
+        gradeService.persistGrades(grades);
     }
 
 }
