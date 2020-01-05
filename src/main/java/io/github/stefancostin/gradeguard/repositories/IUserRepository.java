@@ -1,9 +1,11 @@
 package io.github.stefancostin.gradeguard.repositories;
 
+import io.github.stefancostin.gradeguard.entities.Subject;
 import io.github.stefancostin.gradeguard.entities.User;
 import io.github.stefancostin.gradeguard.utils.Role;
 import io.github.stefancostin.gradeguard.utils.YearOfStudy;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 

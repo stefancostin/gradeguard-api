@@ -1,9 +1,6 @@
 package io.github.stefancostin.gradeguard.controllers;
 
-import io.github.stefancostin.gradeguard.models.StudentGradesDTO;
-import io.github.stefancostin.gradeguard.models.SubjectGradesDTO;
-import io.github.stefancostin.gradeguard.models.SubjectDTO;
-import io.github.stefancostin.gradeguard.models.UserDTO;
+import io.github.stefancostin.gradeguard.models.*;
 import io.github.stefancostin.gradeguard.services.SubjectService;
 import io.github.stefancostin.gradeguard.services.UserService;
 import io.github.stefancostin.gradeguard.utils.Semester;
@@ -57,6 +54,12 @@ public class UserController {
     @RequestMapping(value = "admin/professors", method = RequestMethod.GET)
     public List<UserDTO> getProfessors() {
         return userService.getProfessors();
+    }
+
+    /** Admin View -- Adds Professor */
+    @RequestMapping(value = "admin/professors", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public UserDTO insertProfessor(@RequestBody ProfessorSubjectsDTO professor) {
+        return this.userService.insertProfessor(professor);
     }
 
     /** Admin View -- Populates Students Table */

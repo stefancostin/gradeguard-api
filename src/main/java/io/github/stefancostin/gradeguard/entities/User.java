@@ -34,11 +34,11 @@ public class User {
     private YearOfStudy yearOfStudy;
 
     @JsonBackReference
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "professors_subjects",
-            joinColumns = @JoinColumn(name = "professor_id"),
-            inverseJoinColumns = @JoinColumn(name = "subject_id"))
+            joinColumns = @JoinColumn(name = "professor_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "subject_id", referencedColumnName = "id"))
     private Set<Subject> subjectsTaught = new HashSet<Subject>();
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -150,13 +150,13 @@ public class User {
     }
 
     public void addSubjectTaught(Subject subject) {
-//        this.subjectsTaught.add(subject);
-//        subject.getProfessors().add(this);
+        this.subjectsTaught.add(subject);
+        subject.getProfessors().add(this);
     }
 
     public void removeSubjectTaught(Subject subject) {
-//        this.subjectsTaught.remove(subject);
-//        subject.getProfessors().remove(this);
+        this.subjectsTaught.remove(subject);
+        subject.getProfessors().remove(this);
     }
 
 }

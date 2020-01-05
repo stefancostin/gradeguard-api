@@ -28,7 +28,7 @@ public class Subject {
     private Semester semester;
 
     @JsonManagedReference
-    @ManyToMany(mappedBy = "subjectsTaught", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "subjectsTaught", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<User> professors = new HashSet<User>();
 
     @OneToMany(mappedBy = "subject", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
@@ -104,13 +104,13 @@ public class Subject {
     }
 
     public void addProfessor(User professor) {
-//        this.professors.add(professor);
-//        professor.getSubjectsTaught().add(this);
+        this.professors.add(professor);
+        professor.getSubjectsTaught().add(this);
     }
 
     public void removeProfessor(User professor) {
-//        this.professors.remove(professor);
-//        professor.getSubjectsTaught().remove(this);
+        this.professors.remove(professor);
+        professor.getSubjectsTaught().remove(this);
     }
 
 }

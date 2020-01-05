@@ -3,13 +3,13 @@ package io.github.stefancostin.gradeguard.services;
 import io.github.stefancostin.gradeguard.entities.Grade;
 import io.github.stefancostin.gradeguard.entities.Subject;
 import io.github.stefancostin.gradeguard.entities.User;
+import io.github.stefancostin.gradeguard.models.ProfessorSubjectsDTO;
 import io.github.stefancostin.gradeguard.models.StudentGradesDTO;
 import io.github.stefancostin.gradeguard.models.SubjectDTO;
 import io.github.stefancostin.gradeguard.models.UserDTO;
 import io.github.stefancostin.gradeguard.repositories.ISubjectRepository;
 import io.github.stefancostin.gradeguard.repositories.IUserRepository;
 import io.github.stefancostin.gradeguard.utils.Role;
-import io.github.stefancostin.gradeguard.utils.Semester;
 import io.github.stefancostin.gradeguard.utils.YearOfStudy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -96,6 +96,23 @@ public class UserService {
         Role studentRole = Role.STUDENT;
         return userRepository.findByYearOfStudyAndRole(yearOfStudy, studentRole)
                 .stream().map(student -> new UserDTO(student)).collect(Collectors.toList());
+    }
+
+    public UserDTO insertProfessor(ProfessorSubjectsDTO professor) {
+        User professorModel = new User();
+        professorModel.setRole(Role.PROFESSOR);
+        professorModel.setFirstName(professor.getFirstName());
+        professorModel.setLastName(professor.getLastName());
+        professorModel.setEmail(professor.getEmail());
+        professorModel.setPassword(professor.getPassword());
+
+        for (Integer subjectId : professor.getSubjectsIdList()) {
+            Subject subject = subjectRepository.findById(subjectId).orElse(null);
+            professorModel.addSubjectTaught(subject);
+        }
+
+        User professorAdded = this.userRepository.save(professorModel);
+        return new UserDTO(professorAdded);
     }
 
 }
