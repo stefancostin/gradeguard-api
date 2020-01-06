@@ -28,7 +28,7 @@ public class Subject {
     private Semester semester;
 
     @JsonManagedReference
-    @ManyToMany(mappedBy = "subjectsTaught", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "subjectsTaught", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
     private Set<User> professors = new HashSet<User>();
 
     @OneToMany(mappedBy = "subject", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)

@@ -27,9 +27,7 @@ public class SubjectService {
         return new SubjectDTO(subjectModel);
     }
 
-    public List<SubjectDTO> getSubjectsByYearAndSemester(int yearOfStudyIndex, int semesterIndex) {
-        YearOfStudy yearOfStudy = YearOfStudy.values()[yearOfStudyIndex];
-        Semester semester = Semester.values()[semesterIndex];
+    public List<SubjectDTO> getSubjectsByYearAndSemester(YearOfStudy yearOfStudy, Semester semester) {
         return subjectRepository.findByYearOfStudyAndSemester(yearOfStudy, semester)
                 .stream().map(subject -> new SubjectDTO(subject)).collect(Collectors.toList());
     }

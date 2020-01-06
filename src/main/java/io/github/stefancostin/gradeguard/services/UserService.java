@@ -115,4 +115,24 @@ public class UserService {
         return new UserDTO(professorAdded);
     }
 
+    public UserDTO updateProfessor(int professorId, ProfessorSubjectsDTO professor) {
+        User professorModel = userRepository.findById(professorId).orElse(null);
+        professorModel.setFirstName(professor.getFirstName());
+        professorModel.setLastName(professor.getLastName());
+        professorModel.setEmail(professor.getEmail());
+
+        if (professor.getPassword() != null) {
+            professorModel.setPassword(professor.getPassword());
+        }
+
+        professorModel.getSubjectsTaught().clear();
+        for (Integer subjectId : professor.getSubjectsIdList()) {
+            Subject subject = subjectRepository.findById(subjectId).orElse(null);
+            professorModel.addSubjectTaught(subject);
+        }
+
+        User professorAdded = this.userRepository.save(professorModel);
+        return new UserDTO(professorAdded);
+    }
+
 }

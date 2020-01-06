@@ -62,14 +62,20 @@ public class UserController {
         return this.userService.insertProfessor(professor);
     }
 
+    /** Admin View -- Updates Professor */
+    @RequestMapping(value = "admin/professors/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public UserDTO insertProfessor(@PathVariable("id") int id, @RequestBody ProfessorSubjectsDTO professor) {
+        return this.userService.updateProfessor(id, professor);
+    }
+
     /** Admin View -- Populates Students Table */
     @RequestMapping(value = "/admin/students/{yearOfStudy}")
     public List<UserDTO> getStudentsByYearOfStudy(@PathVariable("yearOfStudy") YearOfStudy yearOfStudy) {
         return userService.getStudentsByYearOfStudy(yearOfStudy);
     }
 
-    /** Student View -- On Init*/
-    @RequestMapping(value = "/student-data/{studentId}", method = RequestMethod.GET)
+    /** Student View -- On Init */
+    @RequestMapping(value = "/students/{studentId}", method = RequestMethod.GET)
     public UserDTO getStudentData(@PathVariable("studentId") int studentId) {
         return userService.getStudentData(studentId);
     }

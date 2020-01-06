@@ -3,6 +3,8 @@ package io.github.stefancostin.gradeguard.controllers;
 import io.github.stefancostin.gradeguard.entities.Subject;
 import io.github.stefancostin.gradeguard.models.SubjectDTO;
 import io.github.stefancostin.gradeguard.services.SubjectService;
+import io.github.stefancostin.gradeguard.utils.Semester;
+import io.github.stefancostin.gradeguard.utils.YearOfStudy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -43,8 +45,8 @@ public class SubjectController {
 
     /** Admin View -- Populates Subjects Table */
     @RequestMapping(value = "admin/{yearOfStudy}/{semester}", method = RequestMethod.GET)
-    public List<SubjectDTO> getSubjectsByYearAndSemester(@PathVariable("yearOfStudy") int yearOfStudy,
-                                                         @PathVariable("semester") int semester) {
+    public List<SubjectDTO> getSubjectsByYearAndSemester(@PathVariable("yearOfStudy") YearOfStudy yearOfStudy,
+                                                         @PathVariable("semester") Semester semester) {
         return subjectService.getSubjectsByYearAndSemester(yearOfStudy, semester);
     }
 
