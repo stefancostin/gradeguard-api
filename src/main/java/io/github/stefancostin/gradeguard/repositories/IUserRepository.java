@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IUserRepository extends JpaRepository<User, Integer> {
 
@@ -20,5 +21,7 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
     List<User> findByYearOfStudyAndStudentGradesSubjectId(YearOfStudy yearOfStudy, int subjectId);
 
     List<User> findByYearOfStudyAndRole(YearOfStudy yearOfStudy, Role role);
+
+    Optional<User> findByEmailAndPassword(String email, String password);
 
 }
