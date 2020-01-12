@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class SubjectService {
 
     @Autowired
-    ISubjectRepository subjectRepository;
+    private ISubjectRepository subjectRepository;
 
     public List<SubjectDTO> getSubjects() {
         return subjectRepository.findAll().stream().map(subject -> new SubjectDTO(subject)).collect(Collectors.toList());

@@ -16,7 +16,7 @@ import java.util.List;
 public class SubjectController {
 
     @Autowired
-    SubjectService subjectService;
+    private SubjectService subjectService;
 
     @RequestMapping(method = RequestMethod.GET)
     public List<SubjectDTO> getSubjects() {

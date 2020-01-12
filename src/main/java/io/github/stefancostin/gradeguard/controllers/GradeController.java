@@ -15,7 +15,7 @@ import java.util.List;
 public class GradeController {
 
     @Autowired
-    GradeService gradeService;
+    private GradeService gradeService;
 
     @RequestMapping(value = "/subject/{subjectId}", method = RequestMethod.GET)
     public List<Grade> getSubjectGrades(@PathVariable("subjectId") int subjectId) {

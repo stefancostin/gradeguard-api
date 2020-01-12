@@ -20,11 +20,11 @@ import java.util.List;
 public class GradeService {
 
     @Autowired
-    IGradeRepository gradeRepository;
+    private IGradeRepository gradeRepository;
     @Autowired
-    IUserRepository userRepository;
+    private IUserRepository userRepository;
     @Autowired
-    ISubjectRepository subjectRepository;
+    private ISubjectRepository subjectRepository;
 
     public List<Grade> getGradesBySubject(int subjectId) {
         return gradeRepository.findBySubjectId(subjectId);

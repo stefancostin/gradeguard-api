@@ -3,31 +3,31 @@ package io.github.stefancostin.gradeguard.models;
 import io.github.stefancostin.gradeguard.utils.Role;
 
 public class AuthDTO {
-    private int userId;
-    private String userName;
-    private Role userRole;
+    private int id;
+    private String name;
+    private Role role;
 
-    public int getUserId() {
-        return userId;
+    public int getId() {
+        return id;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Role getUserRole() {
-        return userRole;
+    public Role getRole() {
+        return role;
     }
 
-    public void setUserRole(Role userRole) {
-        this.userRole = userRole;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

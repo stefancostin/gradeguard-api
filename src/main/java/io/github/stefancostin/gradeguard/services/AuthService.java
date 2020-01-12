@@ -5,14 +5,19 @@ import io.github.stefancostin.gradeguard.models.AuthRequestDTO;
 import io.github.stefancostin.gradeguard.models.AuthDTO;
 import io.github.stefancostin.gradeguard.models.AuthResponseDTO;
 import io.github.stefancostin.gradeguard.repositories.IUserRepository;
+import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 @Service
 public class AuthService {
 
     @Autowired
-    IUserRepository userRepository;
+    private IUserRepository userRepository;
+    @Resource
+    private BasicTextEncryptor encryptor;
 
     public AuthResponseDTO isAuthenticated(AuthRequestDTO authRequest) {
         if (authRequest.getEmail() == null || authRequest.getPassword() == null) {
@@ -21,7 +26,12 @@ public class AuthService {
 
         String email = authRequest.getEmail();
         String password = authRequest.getPassword();
-        User authenticatedUser = userRepository.findByEmailAndPassword(email, password).orElse(null);
+        String encryptedPassword = encryptor.encrypt(password);
+        User authenticatedUser = userRepository.findByEmailAndPassword(email, encryptedPassword).orElse(null);
+//        User authenticatedUser = userRepository.findByEmailAndPassword(email, password).orElse(null);
+
+        // find user by email and then user encryptor.checkPassowrd(inputPass, encryPass);
+        User user = userRepository.findByEmail(email).orElse(null);
 
         if (authenticatedUser == null) {
             return failAuthentication();
@@ -38,9 +48,9 @@ public class AuthService {
 
     private AuthResponseDTO passAuthentication(User authenticatedUser) {
         AuthDTO authenticatedUserDTO = new AuthDTO();
-        authenticatedUserDTO.setUserId(authenticatedUser.getId());
-        authenticatedUserDTO.setUserName(authenticatedUser.getLastName() + " " + authenticatedUser.getFirstName());
-        authenticatedUserDTO.setUserRole(authenticatedUser.getRole());
+        authenticatedUserDTO.setId(authenticatedUser.getId());
+        authenticatedUserDTO.setName(authenticatedUser.getLastName() + " " + authenticatedUser.getFirstName());
+        authenticatedUserDTO.setRole(authenticatedUser.getRole());
 
         AuthResponseDTO response = new AuthResponseDTO();
         response.setAuthenticated(true);

@@ -11,9 +11,11 @@ import io.github.stefancostin.gradeguard.repositories.ISubjectRepository;
 import io.github.stefancostin.gradeguard.repositories.IUserRepository;
 import io.github.stefancostin.gradeguard.utils.Role;
 import io.github.stefancostin.gradeguard.utils.YearOfStudy;
+import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,9 +24,11 @@ import java.util.stream.Collectors;
 public class UserService {
 
     @Autowired
-    IUserRepository userRepository;
+    private IUserRepository userRepository;
     @Autowired
-    ISubjectRepository subjectRepository;
+    private ISubjectRepository subjectRepository;
+    @Resource
+    private BasicTextEncryptor encryptor;
 
     public List<UserDTO> getUsers() {
         return userRepository.findAll().stream().map(user -> new UserDTO(user)).collect(Collectors.toList());
@@ -45,6 +49,10 @@ public class UserService {
 
     public UserDTO insertUser(UserDTO user) {
         User userModel = new User(user);
+
+        String encryptedPassword = encryptor.encrypt(user.getPassword());
+        userModel.setPassword(encryptedPassword);
+
         User insertedUser = userRepository.save(userModel);
         return new UserDTO(insertedUser);
     }
@@ -56,6 +64,12 @@ public class UserService {
         updatedUser.setEmail(user.getEmail());
         updatedUser.setRole(user.getRole());
         updatedUser.setYearOfStudy(user.getYearOfStudy());
+
+        if (user.getPassword() != null) {
+            String encryptedPassword = encryptor.encrypt(user.getPassword());
+            updatedUser.setPassword(encryptedPassword);
+        }
+
         User result = userRepository.save(updatedUser);
         return new UserDTO(result);
     }
@@ -104,7 +118,9 @@ public class UserService {
         professorModel.setFirstName(professor.getFirstName());
         professorModel.setLastName(professor.getLastName());
         professorModel.setEmail(professor.getEmail());
-        professorModel.setPassword(professor.getPassword());
+
+        String encryptedPassword = encryptor.encrypt(professor.getPassword());
+        professorModel.setPassword(encryptedPassword);
 
         for (Integer subjectId : professor.getSubjectsIdList()) {
             Subject subject = subjectRepository.findById(subjectId).orElse(null);
@@ -122,7 +138,8 @@ public class UserService {
         professorModel.setEmail(professor.getEmail());
 
         if (professor.getPassword() != null) {
-            professorModel.setPassword(professor.getPassword());
+            String encryptedPassword = encryptor.encrypt(professor.getPassword());
+            professorModel.setPassword(encryptedPassword);
         }
 
         professorModel.getSubjectsTaught().clear();

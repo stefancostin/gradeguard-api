@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthController {
     @Autowired
-    AuthService authService;
+    private AuthService authService;
 
     @RequestMapping(method = RequestMethod.POST)
     public AuthResponseDTO login(@RequestBody AuthRequestDTO authRequest) {
