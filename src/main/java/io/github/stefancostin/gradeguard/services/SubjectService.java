@@ -9,7 +9,9 @@ import io.github.stefancostin.gradeguard.utils.YearOfStudy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,8 +35,17 @@ public class SubjectService {
     }
 
     public List<SubjectGradesDTO> getStudentGrades(int studentId, YearOfStudy yearOfStudy, Semester semester) {
+        Map<Integer, Subject> uniqueSubjectsMap = new HashMap<>();
         return subjectRepository.findByYearOfStudyAndSemesterAndGradesStudentId(yearOfStudy, semester, studentId)
-                .stream().map(subject -> new SubjectGradesDTO(subject)).collect(Collectors.toList());
+                .stream()
+                .filter(subject -> !uniqueSubjectsMap.containsKey(subject.getId()))
+                .peek(subject -> {
+                    // store subject ids in a hash map in order to filter out duplicate subjects
+                    if (!uniqueSubjectsMap.containsKey(subject.getId())) {
+                        uniqueSubjectsMap.put(subject.getId(), subject);
+                    }
+                })
+                .map(subject -> new SubjectGradesDTO(subject)).collect(Collectors.toList());
     }
 
     public SubjectDTO insertSubject(SubjectDTO subject) {

@@ -26,18 +26,28 @@ public class AuthService {
 
         String email = authRequest.getEmail();
         String password = authRequest.getPassword();
-        String encryptedPassword = encryptor.encrypt(password);
-        User authenticatedUser = userRepository.findByEmailAndPassword(email, encryptedPassword).orElse(null);
-//        User authenticatedUser = userRepository.findByEmailAndPassword(email, password).orElse(null);
 
-        // find user by email and then user encryptor.checkPassowrd(inputPass, encryPass);
+        // encrypted version
         User user = userRepository.findByEmail(email).orElse(null);
-
-        if (authenticatedUser == null) {
+        if (user == null) {
             return failAuthentication();
         }
 
-        return passAuthentication(authenticatedUser);
+        String decryptedPassword = encryptor.decrypt(user.getPassword());
+        if (password.equals(decryptedPassword)) {
+            return passAuthentication(user);
+        }
+
+        return failAuthentication();
+
+        // unencrypted version
+//        User authenticatedUser = userRepository.findByEmailAndPassword(email, password).orElse(null);
+//
+//        if (authenticatedUser == null) {
+//            return failAuthentication();
+//        }
+//
+//        return passAuthentication(authenticatedUser);
     }
 
     private AuthResponseDTO failAuthentication() {

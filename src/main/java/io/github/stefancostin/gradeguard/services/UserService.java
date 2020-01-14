@@ -16,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -89,12 +91,21 @@ public class UserService {
                 .stream().map(subject -> new SubjectDTO(subject)).collect(Collectors.toList());
     }
 
-    public List<StudentGradesDTO> getStudentsBySubject(int subjectId) {
+    public List<StudentGradesDTO> getStudentGradesBySubject(int subjectId) {
         Subject subject = subjectRepository.findById(subjectId).orElse(null);
         YearOfStudy yearOfStudy = subject.getYearOfStudy();
 
+        Map<Integer, User> uniqueStudentsMap = new HashMap<>();
         return userRepository.findByYearOfStudyAndStudentGradesSubjectId(yearOfStudy, subjectId)
-                .stream().map(user -> {
+                .stream()
+                .filter(user -> !uniqueStudentsMap.containsKey(user.getId()))
+                .peek(user -> {
+                    // store user ids in a hash map in order to filter out duplicate students
+                    if (!uniqueStudentsMap.containsKey(user.getId())) {
+                        uniqueStudentsMap.put(user.getId(), user);
+                    }
+                })
+                .map(user -> {
 
                     Set<Grade> filteredGrades = user.getStudentGrades().stream().filter((grade -> {
                         return grade.getSubject().getId() == subjectId;
@@ -104,6 +115,14 @@ public class UserService {
                     return new StudentGradesDTO((user));
 
                 }).collect(Collectors.toList());
+    }
+
+    public List<UserDTO> getStudentsBySubject(int subjectId) {
+        Subject subject = subjectRepository.findById(subjectId).orElse(null);
+        YearOfStudy yearOfStudy = subject.getYearOfStudy();
+
+        return userRepository.findByYearOfStudyAndRole(yearOfStudy, Role.STUDENT)
+                .stream().map(user -> new UserDTO(user)).collect(Collectors.toList());
     }
 
     public List<UserDTO> getStudentsByYearOfStudy(YearOfStudy yearOfStudy) {
@@ -122,9 +141,11 @@ public class UserService {
         String encryptedPassword = encryptor.encrypt(professor.getPassword());
         professorModel.setPassword(encryptedPassword);
 
-        for (Integer subjectId : professor.getSubjectsIdList()) {
-            Subject subject = subjectRepository.findById(subjectId).orElse(null);
-            professorModel.addSubjectTaught(subject);
+        if (professor.getSubjectsIdList() != null) {
+            for (Integer subjectId : professor.getSubjectsIdList()) {
+                Subject subject = subjectRepository.findById(subjectId).orElse(null);
+                professorModel.addSubjectTaught(subject);
+            }
         }
 
         User professorAdded = this.userRepository.save(professorModel);

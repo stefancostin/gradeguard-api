@@ -94,9 +94,15 @@ public class UserController {
         return userService.getSubjectsTaughtByProfessor(professorId);
     }
 
-    /** Professor View -- Populates Table && CRUD OPS Dropdown */
+    /** Professor View -- Populates Table */
+    @RequestMapping(value = "/professors/subjects/{subjectId}/grades", method = RequestMethod.GET)
+    public List<StudentGradesDTO> getStudentGradesBySubject(@PathVariable("subjectId") int subjectId) {
+        return userService.getStudentGradesBySubject(subjectId);
+    }
+
+    /** Professor View -- CRUD OPS Students Dropdown */
     @RequestMapping(value = "/professors/subjects/{subjectId}/students", method = RequestMethod.GET)
-    public List<StudentGradesDTO> getStudentsBySubject(@PathVariable("subjectId") int subjectId) {
+    public List<UserDTO> getStudentsBySubject(@PathVariable("subjectId") int subjectId) {
         return userService.getStudentsBySubject(subjectId);
     }
 
