@@ -1,6 +1,6 @@
 # gradeguard-api
 Spring Boot API pentru proiectul de Limbaje si Tehnologii Web (LTW).
-<img src="https://imgur.com/sgl6EMv"/>
+<img src="https://i.imgur.com/sgl6EMv.jpg"/>
 
 ## Import Database
 In order to import the GradeGuard database, you need to follow these steps:
