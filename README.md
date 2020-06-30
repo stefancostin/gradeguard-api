@@ -1,5 +1,5 @@
 # gradeguard-api
-Spring Boot API pentru proiectul de Limbaje si Tehnologii Web (LTW).
+Spring Boot API for GradeGuard virtual grading catalog.
 <img src="https://i.imgur.com/sgl6EMv.jpg"/>
 
 ## Import Database
